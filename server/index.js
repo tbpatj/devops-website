@@ -34,7 +34,7 @@ app.post("/api/students", (req,res) => {
     const index = students.findIndex( studentName => studentName === name);
     if(index === -1 && name !== ""){
         students.push(req.body.name);
-        rollbar.log("Student added successfully", {author: "Tuuuj", type: "manual entry", context: "User with ip of ${req.ip} joined"})
+        rollbar.log("Student added successfully", {author: "Tj", type: "manual entry", context: `User with ip of ${req.ip} added a student: ${name}`})
     } else if(name === ""){
         rollbar.error("no name given", {context: `a goober with the ip of ${req.ip} didn't put anything in`});
         res.status(400).send("Must provide a name");
