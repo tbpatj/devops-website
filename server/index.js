@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 
-const port = process.env.port || 4545;
+const port = process.env.PORT || 4545;
 
 const students = ["Jeddy"];
 
