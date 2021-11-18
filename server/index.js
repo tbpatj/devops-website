@@ -20,11 +20,11 @@ const students = ["Jeddy"];
 
 app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, "../public/index.html"));
-    rollbar.info(`Sent user ${req.ip} the html file`);
+    rollbar.info(`Sent user the html file`, {context: `sent user ip of ${req.ip}`});
 });
 
 app.get("/api/students", (req, res) => {
-    rollbar.info(`${req.ip} got the list of students on page load`);
+    rollbar.info(`someone loaded students`, {context: `user with ip of ${req.ip}`});
     res.status(200).send(students);
 });
 
@@ -34,7 +34,7 @@ app.post("/api/students", (req,res) => {
     const index = students.findIndex( studentName => studentName === name);
     if(index === -1 && name !== ""){
         students.push(req.body.name);
-        rollbar.log("Student added successfully", {author: "Tuuuj", type: "manual entry"})
+        rollbar.log("Student added successfully", {author: "Tuuuj", type: "manual entry", context: "User with ip of ${req.ip} joined"})
     } else if(name === ""){
         rollbar.error("no name given");
         res.status(400).send("Must provide a name");
@@ -47,8 +47,9 @@ app.post("/api/students", (req,res) => {
 app.delete("/api/students/:id", (req,res) => {
     let {id} = req.params;
     if(id < students.length && id >= 0){
+        let name = students[id];
         students.splice(id,1);
-        rollbar.log(`Student ${id} deleted`);
+        rollbar.log(`Student deleted`, {context: `student with name ${name} with index ${id}`});
         res.status(200).send(students);
     } else {
         rollbar.error("Student id does not exist");
