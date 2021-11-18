@@ -3,6 +3,8 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 
 const port = process.env.PORT || 4545;
 
@@ -16,6 +18,11 @@ app.get('/', (req,res) => {
 app.get("/api/students", (req, res) => {
     res.status(200).send(students);
 });
+
+app.post("/api/students", (req,res) => {
+    students.push(req.body.name);
+    res.status(200).send(students);
+})
 
 
 
