@@ -36,10 +36,10 @@ app.post("/api/students", (req,res) => {
         students.push(req.body.name);
         rollbar.log("Student added successfully", {author: "Tuuuj", type: "manual entry", context: "User with ip of ${req.ip} joined"})
     } else if(name === ""){
-        rollbar.error("no name given");
+        rollbar.error("no name given", {context: `a goober with the ip of ${req.ip} didn't put anything in`});
         res.status(400).send("Must provide a name");
     } else {
-        rollbar.error("student already exists");
+        rollbar.error("student already exists", {context: `well thats akward user with ip: ${req.ip} tried sending in a duplicate`});
         res.status(400).send("that student already exists");
     }
     res.status(200).send(students);
@@ -52,7 +52,7 @@ app.delete("/api/students/:id", (req,res) => {
         rollbar.log(`Student deleted`, {context: `student with name ${name} with index ${id}`});
         res.status(200).send(students);
     } else {
-        rollbar.error("Student id does not exist");
+        rollbar.error("Student id does not exist", {context: `I don't know how user ${req.ip} sent a delete request`});
         res.status(400).send("No id of input was found in data");
     }
     
