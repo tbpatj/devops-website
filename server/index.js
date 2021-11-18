@@ -4,12 +4,20 @@ const cors = require('cors');
 
 const app = express();
 
+const port = process.env.port || 4545;
+
+const students = ["Jeddy"];
+
 app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, "../public/index.html"));
     rollbar.log(`Sent user ${req.ip} the html file`);
-})
+});
 
-const port = process.env.port || 4545;
+app.get("/api/students", (req, res) => {
+    res.status(200).send(students);
+});
+
+
 
 // include and initialize the rollbar library with your access token
 var Rollbar = require('rollbar')
